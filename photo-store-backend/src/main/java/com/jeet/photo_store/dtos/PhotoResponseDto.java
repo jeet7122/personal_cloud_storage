@@ -15,4 +15,5 @@ public class PhotoResponseDto {
     private Long size;
     private LocalDateTime uploadedAt;
     private boolean duplicate;
+    private String previewUrl;
 }

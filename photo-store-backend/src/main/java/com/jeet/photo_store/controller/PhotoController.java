@@ -24,14 +24,20 @@ public class PhotoController {
         return ResponseEntity.ok(photoService.getAllPhotos());
     }
 
-    @PostMapping(value = "/upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<PhotoResponseDto> uploadPhoto(@RequestParam("file") MultipartFile file){
-        return ResponseEntity.ok(photoService.uploadPhoto(file));
-    }
-
 
     @GetMapping("/{id}/url")
     public ResponseEntity<PhotoUrlResponseDto> getPhotoUrl(@PathVariable UUID id){
         return ResponseEntity.ok(photoService.getPhotoUrl(id));
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deletePhoto(@PathVariable UUID id){
+        photoService.deletePhoto(id);
+        return ResponseEntity.noContent().build();
+    }
+
+    @PostMapping(value = "/upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<List<PhotoResponseDto>> uploadPhotos(@RequestParam("files") MultipartFile[] files) {
+        return ResponseEntity.ok(photoService.uploadPhotos(files));
     }
 }

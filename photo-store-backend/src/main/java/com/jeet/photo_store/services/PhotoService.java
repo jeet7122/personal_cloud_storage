@@ -12,6 +12,7 @@ public interface PhotoService {
     List<PhotoResponseDto> getAllPhotos();
     Photo getPhotoById(UUID id);
     PhotoResponseDto uploadPhoto(MultipartFile file);
-
     PhotoUrlResponseDto getPhotoUrl(UUID id);
+    void deletePhoto(UUID id);
+    List<PhotoResponseDto> uploadPhotos(MultipartFile[] files);
 }

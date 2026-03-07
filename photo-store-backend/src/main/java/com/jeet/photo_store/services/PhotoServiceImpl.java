@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 
@@ -75,6 +76,23 @@ public class PhotoServiceImpl implements PhotoService {
                 .build();
     }
 
+    @Override
+    public void deletePhoto(UUID id) {
+        Photo photo = getPhotoById(id);
+        storageService.deleteFile(photo.getObjectKey());
+        photoRepository.delete(photo);
+    }
+
+    @Override
+    public List<PhotoResponseDto> uploadPhotos(MultipartFile[] files) {
+        if (files == null || files.length == 0){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "At least one file is required!");
+        }
+        return Arrays.stream(files)
+                .map(this::uploadPhoto)
+                .toList();
+    }
+
 
     private PhotoResponseDto mapToPhotoResponse(Photo photo, boolean duplicate){
         return PhotoResponseDto.builder()
@@ -84,6 +102,7 @@ public class PhotoServiceImpl implements PhotoService {
                 .size(photo.getSize())
                 .uploadedAt(photo.getUploadedAt())
                 .duplicate(duplicate)
+                .previewUrl(storageService.generatePresignedUrl(photo.getObjectKey()))
                 .build();
     }
 }

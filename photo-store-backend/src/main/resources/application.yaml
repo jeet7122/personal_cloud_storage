@@ -1,4 +1,9 @@
 spring:
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          jwk-set-uri: https://fleet-piranha-77.clerk.accounts.dev/.well-known/jwks.json
   servlet:
     multipart:
       max-file-size: 10MB
@@ -28,3 +33,6 @@ cloudflare:
     secret-key: ${R2_SECRET_KEY}
     endpoint: https://89533f8f9d7afdc40e6210cac778a425.r2.cloudflarestorage.com
     bucket: personal-cloud
+
+app:
+  allowed-user-id: user_3AdX9g4G3x40B81Og3gX4RW7ujl
