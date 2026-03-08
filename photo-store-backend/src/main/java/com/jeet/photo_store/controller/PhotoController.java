@@ -1,5 +1,6 @@
 package com.jeet.photo_store.controller;
 
+import com.jeet.photo_store.dtos.PhotoPageResponseDto;
 import com.jeet.photo_store.dtos.PhotoResponseDto;
 import com.jeet.photo_store.dtos.PhotoUrlResponseDto;
 import com.jeet.photo_store.services.PhotoService;
@@ -20,10 +21,12 @@ public class PhotoController {
     private final PhotoService photoService;
 
     @GetMapping
-    public ResponseEntity<List<PhotoResponseDto>> getAllPhotos(){
-        return ResponseEntity.ok(photoService.getAllPhotos());
+    public ResponseEntity<PhotoPageResponseDto> getPhotos(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "20") int size
+    ) {
+        return ResponseEntity.ok(photoService.getPhotos(page, size));
     }
-
 
     @GetMapping("/{id}/url")
     public ResponseEntity<PhotoUrlResponseDto> getPhotoUrl(@PathVariable UUID id){

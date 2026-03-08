@@ -34,9 +34,6 @@ public class AllowedUserFilter extends OncePerRequestFilter {
 
             String userId = jwt.getSubject(); // sub claim
 
-            System.out.println("Allowed User ID: " + allowedUserId);
-            System.out.println("JWT sub: " + userId);
-
             if (userId == null || !userId.equals(allowedUserId)) {
                 response.setStatus(HttpServletResponse.SC_FORBIDDEN);
                 response.getWriter().write("You are not allowed to use this API.");

@@ -3,7 +3,7 @@ spring:
     oauth2:
       resourceserver:
         jwt:
-          jwk-set-uri: https://fleet-piranha-77.clerk.accounts.dev/.well-known/jwks.json
+          jwk-set-uri: ${JWKS_URI}
   servlet:
     multipart:
       max-file-size: 10MB
@@ -11,9 +11,9 @@ spring:
   application:
     name: photo-store-backend
   datasource:
-    url: jdbc:postgresql://localhost:5432/personal_storage
-    username: postgres
-    password: Khushi@26
+    url: ${DB_URL}
+    username: ${DB_USER}
+    password: ${DB_PASSWORD}
     driver-class-name: org.postgresql.Driver
   jpa:
     hibernate:
@@ -31,8 +31,9 @@ cloudflare:
   r2:
     access-key: ${R2_ACCESS_KEY}
     secret-key: ${R2_SECRET_KEY}
-    endpoint: https://89533f8f9d7afdc40e6210cac778a425.r2.cloudflarestorage.com
-    bucket: personal-cloud
+    endpoint: ${R2_ENDPOINT}
+    bucket: ${R2_BUCKET}
 
 app:
-  allowed-user-id: user_3AdX9g4G3x40B81Og3gX4RW7ujl
+  frontend-url: ${FRONTEND_URL}
+  allowed-user-id: ${APP_APPROVED_USERID}

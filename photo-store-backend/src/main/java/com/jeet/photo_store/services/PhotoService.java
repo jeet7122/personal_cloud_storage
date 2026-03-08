@@ -1,5 +1,6 @@
 package com.jeet.photo_store.services;
 
+import com.jeet.photo_store.dtos.PhotoPageResponseDto;
 import com.jeet.photo_store.dtos.PhotoResponseDto;
 import com.jeet.photo_store.dtos.PhotoUrlResponseDto;
 import com.jeet.photo_store.models.Photo;
@@ -15,4 +16,5 @@ public interface PhotoService {
     PhotoUrlResponseDto getPhotoUrl(UUID id);
     void deletePhoto(UUID id);
     List<PhotoResponseDto> uploadPhotos(MultipartFile[] files);
+    PhotoPageResponseDto getPhotos(int page, int size);
 }

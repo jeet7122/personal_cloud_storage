@@ -1,11 +1,16 @@
 package com.jeet.photo_store.services;
 
+import com.jeet.photo_store.dtos.PhotoPageResponseDto;
 import com.jeet.photo_store.dtos.PhotoResponseDto;
 import com.jeet.photo_store.dtos.PhotoUrlResponseDto;
 import com.jeet.photo_store.models.Photo;
 import com.jeet.photo_store.repository.PhotoRepository;
 import com.jeet.photo_store.utils.FileHashUtils;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -91,6 +96,27 @@ public class PhotoServiceImpl implements PhotoService {
         return Arrays.stream(files)
                 .map(this::uploadPhoto)
                 .toList();
+    }
+
+    @Override
+    public PhotoPageResponseDto getPhotos(int page, int size) {
+        Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "uploadedAt"));
+        Page<Photo> photoPage = photoRepository.findAll(pageable);
+
+        List<PhotoResponseDto> photos = photoPage.getContent()
+                .stream()
+                .map(photo -> mapToPhotoResponse(photo, false))
+                .toList();
+
+        return PhotoPageResponseDto.builder()
+                .content(photos)
+                .page(photoPage.getNumber())
+                .size(photoPage.getSize())
+                .totalPages(photoPage.getTotalPages())
+                .totalElements(photoPage.getTotalElements())
+                .hasNext(photoPage.hasNext())
+                .hasPrevious(photoPage.hasPrevious())
+                .build();
     }
 
 
