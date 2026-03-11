@@ -1,4 +1,4 @@
-package com.jeet.photo_store.services;
+package com.jeet.photo_store.services.storage;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -11,7 +11,6 @@ import software.amazon.awssdk.services.s3.model.GetObjectRequest;
 import software.amazon.awssdk.services.s3.model.PutObjectRequest;
 import software.amazon.awssdk.services.s3.presigner.S3Presigner;
 import software.amazon.awssdk.services.s3.presigner.model.GetObjectPresignRequest;
-
 import java.io.IOException;
 import java.time.Duration;
 import java.util.UUID;

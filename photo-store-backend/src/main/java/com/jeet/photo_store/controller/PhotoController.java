@@ -3,7 +3,8 @@ package com.jeet.photo_store.controller;
 import com.jeet.photo_store.dtos.PhotoPageResponseDto;
 import com.jeet.photo_store.dtos.PhotoResponseDto;
 import com.jeet.photo_store.dtos.PhotoUrlResponseDto;
-import com.jeet.photo_store.services.PhotoService;
+import com.jeet.photo_store.services.command.PhotoCommandService;
+import com.jeet.photo_store.services.query.PhotoQueryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -18,29 +19,30 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class PhotoController {
 
-    private final PhotoService photoService;
+    private final PhotoCommandService photoCommandService;
+    private final PhotoQueryService photoQueryService;
 
     @GetMapping
     public ResponseEntity<PhotoPageResponseDto> getPhotos(
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "20") int size
     ) {
-        return ResponseEntity.ok(photoService.getPhotos(page, size));
+        return ResponseEntity.ok(photoQueryService.getPhotos(page, size));
     }
 
     @GetMapping("/{id}/url")
     public ResponseEntity<PhotoUrlResponseDto> getPhotoUrl(@PathVariable UUID id){
-        return ResponseEntity.ok(photoService.getPhotoUrl(id));
+        return ResponseEntity.ok(photoQueryService.getPhotoUrl(id));
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deletePhoto(@PathVariable UUID id){
-        photoService.deletePhoto(id);
+        photoCommandService.deletePhoto(id);
         return ResponseEntity.noContent().build();
     }
 
     @PostMapping(value = "/upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<List<PhotoResponseDto>> uploadPhotos(@RequestParam("files") MultipartFile[] files) {
-        return ResponseEntity.ok(photoService.uploadPhotos(files));
+        return ResponseEntity.ok(photoCommandService.uploadPhotos(files));
     }
 }

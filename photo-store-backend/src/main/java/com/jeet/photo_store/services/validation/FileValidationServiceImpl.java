@@ -1,4 +1,4 @@
-package com.jeet.photo_store.services;
+package com.jeet.photo_store.services.validation;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;

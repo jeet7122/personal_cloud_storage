@@ -224,6 +224,8 @@ export default function PhotoDashboard() {
                         },
                     });
 
+
+
                     const uploadedPhotos = response.data;
                     const uploadedArray = Array.isArray(uploadedPhotos)
                         ? uploadedPhotos

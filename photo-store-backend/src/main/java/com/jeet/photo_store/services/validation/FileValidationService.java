@@ -1,4 +1,4 @@
-package com.jeet.photo_store.services;
+package com.jeet.photo_store.services.validation;
 
 import org.springframework.web.multipart.MultipartFile;
 
