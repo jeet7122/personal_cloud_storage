@@ -1,140 +1,325 @@
-# 🌥  Cloud-Vault – Enterprise-Grade Personal Cloud Storage
+# 🌥 CloudVault – Event-Driven Personal Cloud Storage
 
-[![Java 17](https://img.shields.io/badge/Java-21-blue?logo=java&logoColor=white)](https://www.oracle.com/java/)
-[![Spring Boot](https://img.shields.io/badge/Spring%20Boot-3.5.11-green?logo=spring&logoColor=white)](https://spring.io/projects/spring-boot)
+[![Java](https://img.shields.io/badge/Java-21-blue?logo=java&logoColor=white)](https://www.oracle.com/java/)
+[![Spring Boot](https://img.shields.io/badge/Spring%20Boot-3.5-green?logo=spring&logoColor=white)](https://spring.io/projects/spring-boot)
 [![Next.js](https://img.shields.io/badge/Next.js-14-black?logo=next.js&logoColor=white)](https://nextjs.org/)
-[![Vercel](https://img.shields.io/badge/Vercel-Frontend-brightgreen?logo=vercel&logoColor=white)](https://vercel.com/)
-[![Oracle Cloud](https://img.shields.io/badge/Oracle%20Cloud-Backend-orange?logo=oracle&logoColor=white)](https://www.oracle.com/cloud/)
+[![Kafka](https://img.shields.io/badge/Apache-Kafka-black?logo=apachekafka)](https://kafka.apache.org/)
+[![Docker](https://img.shields.io/badge/Docker-Containers-blue?logo=docker)](https://docker.com/)
+[![Cloudflare R2](https://img.shields.io/badge/Cloudflare-R2-orange?logo=cloudflare)](https://www.cloudflare.com/)
+[![Oracle Cloud](https://img.shields.io/badge/Oracle-Cloud-red?logo=oracle)](https://www.oracle.com/cloud/)
+[![Vercel](https://img.shields.io/badge/Vercel-Frontend-black?logo=vercel)](https://vercel.com/)
 
+**CloudVault** is a **cloud-native personal storage platform** built with a **modern event-driven architecture**.  
+It allows users to securely **upload, store, preview, and manage images**, with scalable backend processing powered by **Kafka workers** and **Cloudflare R2 object storage**.
 
-**Cloud-Vault** is a **full-stack, cloud-native personal storage platform** that allows users to securely **upload, download, and manage files** anywhere. Designed with scalability, performance, and security in mind, Cloud-Vault is an **ideal portfolio project** for demonstrating modern web development, cloud integration, and backend architecture.
+This project demonstrates **real-world distributed system architecture**, containerized deployment, and cloud integrations.
 
-Repository: [https://github.com/jeet7122/personal_cloud_storage](https://github.com/jeet7122/personal_cloud_storage)
+Repository:  
+https://github.com/jeet7122/personal_cloud_storage
 
 ---
 
 ## 🚀 Table of Contents
 
-- [Project Overview](#project-overview)
-- [Key Features](#key-features)
-- [Tech Stack](#tech-stack)
-- [Installation](#installation)
-- [Usage](#usage)
-- [Deployment](#deployment)
-- [Screenshots](#screenshots)
-- [Future Enhancements](#future-enhancements)
-- [Contributing](#contributing)
-- [License](#license)
+- Project Overview
+- Architecture
+- Key Features
+- Tech Stack
+- Installation
+- Local Development
+- Deployment
+- Future Improvements
+- Contributing
 
 ---
 
 ## 🌟 Project Overview
-- Link in TOC: [Project Overview](#project-overview)
+
+CloudVault is designed to mimic the **core architecture of modern cloud storage platforms**.
+
+Instead of uploading files synchronously, the system uses an **asynchronous event-driven pipeline** to process uploads reliably and scalably.
+
+### Why this architecture?
+
+Uploading files directly to storage can cause:
+
+- slow APIs
+- blocked threads
+- poor scalability
+
+CloudVault solves this by introducing **Kafka-based background workers**.
+
+### Upload Flow
+```text
+
+Frontend (Next.js)
+        │
+        ▼
+Spring Boot API
+        │
+        ▼
+Kafka Event (photo-upload)
+        │
+        ▼
+Worker Service
+        │
+        ▼
+Cloudflare R2 Storage
+        │
+        ▼
+PostgreSQL Metadata
+```
 
 
-Cloud-Vault is a **modern, secure, and highly responsive cloud storage solution**, designed for personal use or as a **portfolio-ready full-stack application**.
+This architecture allows the system to scale independently for:
 
-**Why Cloud-Vault?**
+- API traffic
+- file processing
+- storage operations
 
-- **Secure:** Files are stored using **Cloudflare R2** for fast, encrypted cloud storage.
-- **Scalable:** Backend powered by **Spring Boot** and deployable on **Oracle Cloud VM**.
-- **Responsive:** Frontend built with **Next.js + TailwindCSS**, optimized for **mobile and desktop**.
-- **Portfolio-Ready:** Demonstrates full-stack skills, cloud deployment, API integration, and modern UI/UX.
+---
+
+## 🏗 System Architecture
+
+CloudVault uses a **microservice-style architecture** with two backend services:
+
+### 1️⃣ API Service
+Responsible for:
+
+- authentication validation
+- upload request validation
+- event publishing to Kafka
+- metadata queries
+
+### 2️⃣ Worker Service
+Responsible for:
+
+- consuming Kafka events
+- uploading files to Cloudflare R2
+- storing metadata in PostgreSQL
+- deleting temporary files
+
+### Infrastructure
+```text
+Next.js Frontend (Vercel)
+        │
+        ▼
+Spring Boot API (Oracle Cloud)
+        │
+        ▼
+Kafka (Docker)
+        │
+        ▼
+Worker Service (Docker)
+        │
+        ▼
+Cloudflare R2 + PostgreSQL
+
+```
 
 ---
 
 ## ✅ Key Features
 
-- **Robust File Management:** Upload, download, and organize files in folders.
-- **User Authentication:** Secure login, signup, and session management.
-- **Cloud Storage Integration:** Optimized storage via **Cloudflare R2**.
-- **Responsive Design:** Modern interface optimized for **desktop and mobile**.
-- **Shareable Links (Optional):** Securely share files with custom links.
-- **Full-Stack Architecture:** Backend in **Spring Boot**, frontend in **Next.js**.
+### 📤 Asynchronous File Uploads
+Uploads are processed via **Kafka events**, enabling high scalability.
+
+### ☁ Cloud Object Storage
+Files are stored using **Cloudflare R2 (S3-compatible object storage)**.
+
+### 🔐 Secure Authentication
+Frontend authentication powered by **Clerk JWT tokens**.
+
+### ⚡ Event-Driven Processing
+Background workers process uploads asynchronously.
+
+### 📱 Responsive UI
+Modern **Next.js + TailwindCSS** interface with drag-and-drop uploads.
+
+### 🔄 Infinite Scrolling Gallery
+Photos are loaded with paginated APIs and intersection observers.
+
+### 🐳 Containerized Backend
+Kafka, API, and worker services run in **Docker containers**.
 
 ---
 
 ## 🛠 Tech Stack
 
-| Layer       | Technology                                   |
-|------------|----------------------------------------------|
-| Frontend   | Next.js, React, TailwindCSS                  |
-| Backend    | Spring Boot, Java 21                         |
-| Database   | H2 / MySQL / PostgreSQL                      |
-| Storage    | Cloudflare R2                                |
-| Deployment | Oracle Cloud VM (Backend), Vercel (Frontend) |
+| Layer | Technology                     |
+|------|--------------------------------|
+| Frontend | Next.js 16, React, TailwindCSS |
+| Backend API | Spring Boot 3, Java 21         |
+| Worker Service | Spring Boot Kafka Consumer     |
+| Messaging | Apache Kafka                   |
+| Database | PostgreSQL                     |
+| Storage | Cloudflare R2                  |
+| Authentication | Clerk JWT                      |
+| Containers | Docker + Docker Compose        |
+| Deployment | Oracle Cloud VM                |
+| Frontend Hosting | Vercel                         |
 
 ---
 
-## ⚙️ Installation
+## ⚙ Installation
 
-Clone the repository:
+Clone repository
 
 ```bash
-    git clone https://github.com/jeet7122/personal_cloud_storage.git
-    cd personal_cloud_storage
+
+git clone https://github.com/jeet7122/personal_cloud_storage.git
+cd personal_cloud_storage
 ```
 
-## Backend (Spring Boot)
+---
+
+## 🐳 Run with Docker (Recommended)
+
+Start the entire system:
+```bash
+  docker compose up --build
+```
+
+### Services started:
+* Kafka
+* Zookeeper
+* Spring Boot API
+* Worker Service
+
+---
+### Backend API
 ```bash
     cd photo-store-backend
-    ./mnvw clean install
     ./mvnw spring-boot:run
 ```
 
-The backend will run at http://localhost:8080.
+#### Runs at
+```bash
+    http://localhost:8080
+```
+---
 
-## Frontend (Next.js)
+### Frontend
 ```bash
     cd photo-store-frontend
     npm install
-```
-
-#### Create a .env.local file:
-```dotenv
-NEXT_PUBLIC_API_URL=http://<your-oracle-vm-ip>:8080/api
-CLOUDFLARE_ACCOUNT_ID=<your_account_id>
-CLOUDFLARE_API_TOKEN=<your_api_token>
-```
-
-#### Run Frontend
-```bash
     npm run dev
 ```
 
-Open http://localhost:3000 to view the app.
+#### Open:
 
+```bash
+    http://localhost:3000
+```
 ---
 
-## 💻 Usage
-1. Sign up or log in securely.
-2. Upload files via drag-and-drop or file selector.
-3. Download files or folders effortlessly.
-4. Organize your storage with folders and labels.
+## 🔐 Environment Variables
+
+```dotenv
+DB_URL=
+DB_USER=
+DB_PASSWORD=
+
+R2_ACCESS_KEY=
+R2_SECRET_KEY=
+R2_ENDPOINT=
+R2_BUCKET=
+
+JWKS_URI=
+FRONTEND_URL=
+APP_APPROVED_USERID=
+```
 
 ---
-
 ## 🌐 Deployment
-#### Backend (Oracle Cloud VM):
-* Deploy Spring Boot on a free Oracle Cloud VM. 
-* Ensure Java 21 is installed and VM allows traffic on port 8080. 
-* Run the backend using Maven commands.
 
-### Frontend (Vercel):
-* Connect the GitHub repo to Vercel. 
-* Add environment variables in the Vercel dashboard. 
-* Deploy and the frontend communicates with your Oracle Cloud backend.
+### Backend (Oracle Cloud)
 
-## 🔮 Future Enhancements
-* Advanced search and filtering for large datasets. 
-* Role-based access and sharing permissions.
+* Deploy Docker containers on an Oracle Cloud VM 
+* Expose port 8080 
+* Configure environment variables
 
 ---
+
+### Frontend (Vercel)
+
+* Connect GitHub repo 
+* Add environment variables 
+* Deploy automatically
+
+--- 
+
+# 🔮 Future Improvements
+
+### Planned Features
+* image thumbnails 
+* drag-to-folder organization 
+* search with metadata indexing 
+* background virus scanning 
+* multi-user support 
+* signed URL downloads 
+* Redis caching 
+* rate limiting
+
 ## 🤝 Contributing
-1. Fork the repository 
-2. Create a branch (git checkout -b feature/YourFeature)
-3. Commit your changes (git commit -m 'Add feature')
-4. Push the branch (git push origin feature/YourFeature)
-5. Open a Pull Request
+
+Contributions are welcome! If you’d like to improve CloudVault, please follow these steps.
+
+### 1. Fork the Repository
+
+Click the **Fork** button on the top right of the repository page.
+
+### 2. Clone Your Fork
+
+```bash
+    git clone https://github.com/<your-username>/personal_cloud_storage.git
+    cd personal_cloud_storage
+```
+
+### 3. Create new Branch
+
+Create a feature branch for your changes.
+
+```bash
+    git checkout -b feature/your-feature-name
+```
+
+### 4. Make your changes
+Implement your feature or bug fix and ensure the code follows the project structure and conventions.
+
+### 5. Commit your changes
+Write clear and descriptive commit messages.
+
+```bash
+    git commit -m "Add: description of the feature or fix"
+```
+
+### 6. Push to Your Fork
+
+```bash
+    git push origin feature/your-feature-name
+```
+
+### 7. Open a Pull Request
+
+* Go to the original repository 
+* Click New Pull Request 
+* Describe your changes clearly
+
+### Contribution Guidelines
+#### Please ensure:
+* Code is clean and readable 
+* No unnecessary dependencies are added 
+* Existing functionality is not broken 
+* Commit messages are meaningful 
+* Documentation is updated when necessary
+
+### Reporting Issues
+
+If you find a bug or want to request a feature:
+1. Go to the Issues tab 
+2. Create a new issue 
+3. Provide a clear description and steps to reproduce
 
 ---
+### Thank you for helping improve CloudVault! 🚀
