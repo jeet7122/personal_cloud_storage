@@ -2,7 +2,7 @@
 
 [![Java](https://img.shields.io/badge/Java-21-blue?logo=java&logoColor=white)](https://www.oracle.com/java/)
 [![Spring Boot](https://img.shields.io/badge/Spring%20Boot-3.5-green?logo=spring&logoColor=white)](https://spring.io/projects/spring-boot)
-[![Next.js](https://img.shields.io/badge/Next.js-14-black?logo=next.js&logoColor=white)](https://nextjs.org/)
+[![Next.js](https://img.shields.io/badge/Next.js-16-black?logo=next.js&logoColor=white)](https://nextjs.org/)
 [![Kafka](https://img.shields.io/badge/Apache-Kafka-black?logo=apachekafka)](https://kafka.apache.org/)
 [![Docker](https://img.shields.io/badge/Docker-Containers-blue?logo=docker)](https://docker.com/)
 [![Cloudflare R2](https://img.shields.io/badge/Cloudflare-R2-orange?logo=cloudflare)](https://www.cloudflare.com/)
